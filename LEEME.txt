@@ -1,4 +1,4 @@
-MIS RUTAS (versión 5: categorías propias, estadísticas y logros, perfil, instalación en Android)
+MIS RUTAS (versión 6: sitios cercanos agrupados, gráficas de desnivel y velocidad)
 =======================================================================================
 
 Si ya tenías la versión 4 funcionando, solo tienes que hacer la PARTE 1 (subir los archivos).
@@ -251,3 +251,17 @@ PARTE 10. ANDROID
   f. Desinstala la app y vuelve a instalar el APK.
 
  iPhone y iPad no usan APK. Se instalan con Safari > Compartir > "Añadir a pantalla de inicio".
+
+-----------------------------------------------------------------------------------------
+PARTE 11. NOVEDADES DE LA VERSIÓN 6
+-----------------------------------------------------------------------------------------
+ - Sitios muy cerca: si varios puntos quedan juntos en el mapa (por ejemplo ruta + parking + dormida del
+   mismo lugar) se ven como un círculo oscuro con un número. Tócalo y se abren en abanico, cada uno con su
+   icono. Toca el que quieras ver. Tocar el mapa o hacer zoom los vuelve a juntar.
+ - Gráficas: al abrir una ruta con recorrido salen la gráfica de desnivel y, si el archivo traía la hora de
+   cada punto, la de velocidad (con velocidad media). Pasa el dedo o el ratón por la gráfica: aparece el
+   dato y un punto en el mapa con ese lugar exacto. Las rutas importadas con versiones anteriores no
+   guardaron la hora: para ver su velocidad, importa de nuevo el archivo (edita el sitio y vuelve a elegirlo).
+ - Subir actividades directamente desde Garmin o Suunto: ver la respuesta del chat. De momento se hace
+   exportando el GPX/TCX e importándolo.
+ - No hace falta tocar supabase.sql. No subas config.js si ya pusiste tu clave.

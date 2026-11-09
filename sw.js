@@ -1,4 +1,4 @@
-const VERSION = 'v5';
+const VERSION = 'v6';
 const SHELL_CACHE = 'shell-' + VERSION;
 const ASSET_CACHE = 'assets';
 const TILE_CACHE = 'tiles';
