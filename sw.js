@@ -1,9 +1,10 @@
-const VERSION = 'v4';
+const VERSION = 'v5';
 const SHELL_CACHE = 'shell-' + VERSION;
 const ASSET_CACHE = 'assets';
 const TILE_CACHE = 'tiles';
-const MAX_TILES = 600;
-const SHELL = ['./', 'index.html', 'logo-mis-rutas.svg', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'config.js'];
+const MAX_TILES = 900;
+const TILE_HOSTS = ['tile.openstreetmap.org', 'server.arcgisonline.com', 'tile.opentopomap.org'];
+const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'icon-maskable-512.png', 'config.js'];
 const LIBS = ['https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js'];
 const ASSET_HOSTS = ['unpkg.com', 'cdn.jsdelivr.net', 'fonts.googleapis.com', 'fonts.gstatic.com'];
 
@@ -49,7 +50,7 @@ self.addEventListener('fetch', (e) => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
 
-  if (url.hostname === 'tile.openstreetmap.org' || url.hostname === 'server.arcgisonline.com') {
+  if (TILE_HOSTS.some((h) => url.hostname === h || url.hostname.endsWith('.' + h))) {
     e.respondWith((async () => {
       const cache = await caches.open(TILE_CACHE);
       const hit = await cache.match(req);

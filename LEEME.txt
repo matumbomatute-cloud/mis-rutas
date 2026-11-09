@@ -1,63 +1,253 @@
-SOBRE MIS RUTAS
-================
+MIS RUTAS (versión 5: categorías propias, estadísticas y logros, perfil, instalación en Android)
+=======================================================================================
 
-Esta versión añade:
-- Bienvenida con logo de montaña, acceso, registro y modo invitado.
-- Perfil con nombre, apellidos, sexo, fecha de nacimiento y avatar privado.
-- Saludo personalizado («Hola [nombre]»).
-- Cambio de correo y contraseña, y recuperación mediante enlace por correo.
-- Mapas predeterminado, satélite, híbrido y relieve.
+Si ya tenías la versión 4 funcionando, solo tienes que hacer la PARTE 1 (subir los archivos).
+NO subas config.js si ya pegaste tu clave. No hace falta volver a ejecutar supabase.sql.
 
-Los datos de perfil se guardan en los metadatos de Auth de Supabase. El avatar se guarda en
-el bucket privado profile-avatars; cada persona solo puede acceder a su propia foto. Las rutas
-y sitios siguen usando las tablas y reglas existentes.
+Archivos de esta carpeta: index.html, config.js, sw.js, manifest.webmanifest, supabase.sql,
+apple-touch-icon.png, icon-192.png, icon-512.png y este LEEME.txt.
+Todos se suben a GitHub. Ninguno contiene secretos.
 
-CONFIGURAR SUPABASE
--------------------
+El orden es este: 1) GitHub (subir archivos) > 2) Supabase (crear las tablas) > 3) pegar la clave en
+config.js > 4) publicar la web > 5) instalarla en el móvil > 6) compartir.
 
-1. En Supabase abre SQL Editor y ejecuta el archivo supabase.sql actualizado. Es seguro volver
-   a ejecutarlo: crea el bucket de avatares y sus reglas privadas; no borra rutas, cuentas ni fotos.
-2. En Authentication > URL Configuration:
-   - Define Site URL con la dirección pública de la app.
-   - Añade esa misma dirección a Redirect URLs. Si publicas en GitHub Pages, usa la URL exacta
-     que GitHub Pages asigne, incluido el nombre de ruta del repositorio.
-   Los enlaces de recuperación regresan a la dirección actual de la app, y Supabase solo permite
-   los destinos incluidos en esta lista.
-3. En Authentication > Sign In / Providers > Email, permite registros si quieres que se creen
-   cuentas nuevas. Mantén la confirmación por correo activada si quieres verificar cuentas y
-   cambios de correo.
-4. Los enlaces de recuperación y confirmación necesitan que el servicio de correo de Supabase
-   esté habilitado. Para uso real, configura SMTP propio en Authentication > SMTP Settings y
-   revisa las plantillas de Recovery y Email Change.
-5. La URL del proyecto y la clave publicable se configuran en config.js. La clave publicable está
-   pensada para usarse desde el navegador; nunca pongas una clave secret o service_role aquí.
+-----------------------------------------------------------------------------------------
+PARTE 1. GITHUB: SUBIR LOS ARCHIVOS NUEVOS
+-----------------------------------------------------------------------------------------
+Ya tienes el repositorio "mis-rutas". Hay que sustituir los archivos antiguos por estos.
 
-PUBLICAR Y VER LA WEB
----------------------
+ 1. Descomprime el zip (en Mac, doble clic sobre él). Se crea una carpeta con los archivos.
+ 2. Entra en github.com, abre tu repositorio "mis-rutas".
+ 3. Pulsa el botón "Add file" (arriba, a la derecha de la lista de archivos) y elige "Upload files".
+ 4. Abre la carpeta descomprimida, selecciona TODOS los archivos de dentro (Cmd+A) y arrástralos
+    a la zona de GitHub que dice "Drag files here". Arrastra los archivos, no la carpeta.
+ 5. Espera a que aparezca la lista. Abajo pulsa el botón verde "Commit changes".
+    GitHub sustituye los archivos que se llaman igual y añade los nuevos (config.js y supabase.sql).
 
-La app es una web estática. Para publicar con GitHub Pages, abre Settings > Pages y elige
-Deploy from a branch. Selecciona la rama que contiene estos cambios y la carpeta / (root).
-Cuando Pages termine el despliegue, abre la URL que muestra GitHub. Si Pages ya apunta a main,
-puedes cambiarlo a esta rama para revisar la versión antes de integrar los cambios.
+-----------------------------------------------------------------------------------------
+PARTE 2. SUPABASE: CREAR LAS TABLAS
+-----------------------------------------------------------------------------------------
+ 1. Entra en supabase.com y abre tu proyecto.
+ 2. En la barra de iconos de la izquierda, pulsa el icono con forma de terminal ">_".
+    Se llama "SQL Editor" (si pasas el ratón por encima verás el nombre).
+ 3. Pulsa "New query" (o el "+").
+ 4. En GitHub, abre supabase.sql y pulsa el icono de copiar (arriba a la derecha del texto).
+    Si prefieres, ábrelo en tu ordenador con "TextEdit" y copia todo con Cmd+A y Cmd+C.
+ 5. Pega todo el texto en el editor de Supabase (Cmd+V) y pulsa el botón verde "Run"
+    (abajo a la derecha) o Cmd+Enter.
+ 6. Si sale un aviso que habla de "destructive operations" (operaciones destructivas),
+    pulsa "Run this query". Es normal, solo cambia reglas de seguridad y no borra tus datos.
+ 7. Abajo debe poner "Success. No rows returned". Si sale un error en rojo, copia el texto
+    y envíamelo.
 
-MAPAS
------
+ Después, desactiva la confirmación por correo (para poder entrar nada más crear la cuenta):
+ 8. En la barra de iconos de la izquierda, pulsa el icono del candado ("Authentication").
+ 9. En el menú de esa sección, dentro de "Configuration", pulsa "Sign In / Providers".
+10. En la lista de proveedores, pulsa la fila "Email" para desplegarla.
+11. Desactiva el interruptor "Confirm email" y pulsa "Save".
+    En esa misma página arriba hay otro interruptor, "Allow new users to sign up". Déjalo
+    ACTIVADO por ahora (hace falta para que tú y las personas con quien compartas creéis cuenta).
 
-OpenStreetMap aporta el mapa predeterminado. Las vistas satélite, híbrida y relieve usan mapas
-de Esri y mantienen la atribución visible. Los servicios de mapas dependen de internet y de las
-condiciones y disponibilidad de cada proveedor.
+-----------------------------------------------------------------------------------------
+PARTE 3. PEGAR LA CLAVE EN config.js
+-----------------------------------------------------------------------------------------
+ La dirección de tu proyecto ya está escrita en config.js:
+ https://lazintrwuhsepiiwckyd.supabase.co
+ Solo falta la clave.
 
-USAR LA CUENTA
---------------
+ 1. En Supabase, arriba hay un botón verde "Connect". Púlsalo. Se abre una ventana que muestra
+    el "Project URL" y la "Publishable Key" (empieza por sb_publishable_) con un icono de copiar.
+    (Otro camino: icono de engranaje abajo a la izquierda > "API Keys" > "Publishable key" > copiar.)
+    Comprueba que el "Project URL" es igual al de arriba. Si es distinto, usa el tuyo.
+ 2. Copia la Publishable key.
+ 3. En GitHub, abre tu repositorio y pulsa el archivo "config.js".
+ 4. Pulsa el icono del lápiz ("Edit this file"), arriba a la derecha del archivo.
+ 5. Busca la línea SUPABASE_ANON_KEY: ''  y pega la clave ENTRE las dos comillas, sin espacios.
+    Debe quedar así: SUPABASE_ANON_KEY: 'sb_publishable_xxxxxxxx...'
+ 6. Pulsa el botón verde "Commit changes..." (arriba a la derecha) y en la ventana
+    pulsa de nuevo "Commit changes".
 
-En la pantalla inicial puedes iniciar sesión, crear una cuenta o explorar sin cuenta. Para editar
-el perfil, inicia sesión y pulsa el círculo de perfil arriba a la derecha. Ahí verás tu actividad,
-logros y opciones de perfil y cuenta. Cambiar el correo
-puede requerir confirmación por email. Para cambiar una contraseña olvidada, usa «He olvidado mi
-contraseña» en la pantalla de inicio de sesión; el enlace te devuelve a la app para definir una
-contraseña nueva.
+ Si en la página de claves aparece una pestaña "Legacy anon, service_role API keys" y la
+ publishable key te da problemas, puedes usar la clave "anon" de esa pestaña (empieza por eyJ).
+ NUNCA pegues la "secret" ni la "service_role".
 
-CATEGORÍAS NUEVAS
------------------
-En el menú lateral pulsa «+ Agregar nueva opción» para crear categorías como Entreno,
-Carrera o Natación. Se guardan en el dispositivo y también se incluyen en Exportar copia.
+-----------------------------------------------------------------------------------------
+PARTE 4. PUBLICAR LA WEB (GITHUB PAGES)
+-----------------------------------------------------------------------------------------
+ GitHub gratis solo publica webs de repositorios PÚBLICOS. Tu repositorio es privado. Hacerlo
+ público es seguro aquí: solo se ve el código de la app y la clave "publishable", que está pensada
+ para ser pública. Tus sitios, fotos y rutas están en Supabase y solo se ven con usuario y contraseña.
+
+ 1. En tu repositorio, pulsa la pestaña "Settings" (la de la rueda dentada, arriba).
+ 2. Baja hasta el final de la página "General" hasta el apartado rojo "Danger Zone".
+ 3. Pulsa "Change repository visibility" > "Change visibility" > "Make public".
+ 4. GitHub te pedirá confirmar: marca las casillas y escribe el nombre del repositorio (mis-rutas).
+ 5. En el menú izquierdo de Settings, pulsa "Pages".
+ 6. En "Build and deployment", en "Source" deja "Deploy from a branch".
+ 7. En "Branch" elige "main", en el selector de al lado elige "/ (root)" y pulsa "Save".
+ 8. Espera 2 o 3 minutos y recarga la página. Arriba aparecerá "Your site is live at ..."
+    con la dirección: https://TU-USUARIO.github.io/mis-rutas/
+    Esa dirección es la de tu app. Guárdala.
+
+-----------------------------------------------------------------------------------------
+PARTE 5. INSTALAR EN CADA DISPOSITIVO
+-----------------------------------------------------------------------------------------
+ iPhone o iPad:
+ 1. Abre la dirección en Safari.
+ 2. Pulsa el botón Compartir (el cuadrado con la flecha hacia arriba) > "Añadir a pantalla de inicio" > "Añadir".
+ 3. Abre la app desde su icono (no desde Safari). La app instalada guarda su sesión aparte, así que
+    la primera vez tienes que iniciar sesión dentro de ella.
+ 4. Menú ☰ > "Iniciar sesión para sincronizar".
+    La primera vez: "No tengo cuenta", escribe tu correo y una contraseña de 8 caracteres o más.
+    En el resto de dispositivos usa "Ya tengo cuenta" con el mismo correo y contraseña.
+ 5. Permite la ubicación cuando la app lo pida.
+ Ordenador: abre la dirección en el navegador e inicia sesión igual. No hay límite de dispositivos.
+
+-----------------------------------------------------------------------------------------
+PARTE 6. COMPARTIR CON OTRAS PERSONAS
+-----------------------------------------------------------------------------------------
+ 1. La otra persona abre la dirección de la app, entra en el menú ☰ > "Iniciar sesión" > "No tengo cuenta"
+    y crea su cuenta con su correo.
+ 2. Tú, en el menú ☰, pulsa "Compartir con otras personas", escribe su correo, elige "Solo puede ver"
+    o "Puede ver y editar" y pulsa "Compartir".
+ 3. A los pocos segundos ella verá tus sitios en su mapa, marcados como "compartido". Puede ocultarlos
+    con el ojo de la sección "Personas".
+ 4. Compartir es en una sola dirección. Para ver los sitios de ella, ella tiene que hacer lo mismo
+    contigo.
+ 5. Para dejar de compartir: en la misma ventana, pulsa "Quitar" junto a su correo.
+ Los sitios nuevos que cree otra persona son suyos, aunque estén en tu mapa. Solo los puede cambiar o
+ borrar ella, o tú si te dio permiso de editar.
+ Comparte solo con personas que te hayan confirmado que ya crearon su cuenta con ese correo.
+
+ Cuando todas las personas hayan creado su cuenta, puedes cerrar el registro para que nadie más pueda
+ crear cuentas: Supabase > Authentication > Sign In / Providers > desactiva "Allow new users to sign up"
+ y pulsa "Save". Para añadir a alguien más tarde, vuelve a activarlo, deja que cree su cuenta y ciérralo otra vez.
+
+-----------------------------------------------------------------------------------------
+OTRAS COSAS ÚTILES
+-----------------------------------------------------------------------------------------
+ - Sin cobertura la app sigue funcionando. Al volver la red sube los cambios sola.
+ - Si dos personas editan el mismo sitio a la vez, gana el último cambio.
+ - Los proyectos gratuitos de Supabase se pausan tras 7 días sin actividad. No se pierde nada: entra
+   en supabase.com y pulsa "Restore project". Abrir la app una vez por semana lo evita.
+ - Para cambiar una contraseña olvidada: Supabase > Authentication > Users > los tres puntos junto
+   al usuario > "Send password recovery" o elimina el usuario y crea otro.
+ - Menú ☰ > "Exportar copia" guarda un archivo con todos tus sitios, fotos y rutas.
+ - Importar rutas: exporta la actividad de Strava, Garmin Connect o Suunto como GPX (o TCX), guárdala en
+   Archivos y usa menú ☰ > "Importar ruta".
+ - Tras subir una versión nueva a GitHub, cierra la app del todo y ábrela dos veces para ver los cambios.
+
+-----------------------------------------------------------------------------------------
+PARTE 7. RECUPERAR LA CONTRASEÑA POR CORREO
+-----------------------------------------------------------------------------------------
+ La app envía un correo con un ENLACE. Al abrirlo, la persona elige ella misma una contraseña nueva.
+ No se envían contraseñas por correo: sería inseguro (cualquiera que lea el correo la vería).
+
+ A) Decirle a Supabase cuál es la dirección de tu app (obligatorio):
+  1. En Supabase pulsa el candado (Authentication) > "URL Configuration".
+  2. En "Site URL" escribe la dirección de tu app, por ejemplo:
+     https://matumbomatute-cloud.github.io/mis-rutas/
+     (comprueba la tuya en GitHub > Settings > Pages) y pulsa "Save changes".
+  3. En "Redirect URLs" pulsa "Add URL", escribe esa misma dirección seguida de ** , por ejemplo:
+     https://matumbomatute-cloud.github.io/mis-rutas/**
+     y pulsa "Save URLs".
+
+ B) Los correos de Supabase sin configurar tienen límites (obligatorio si quieres que le llegue a otras personas):
+  El envío de correo que trae Supabase de serie solo envía a los correos de TU equipo de Supabase (el tuyo)
+  y muy pocos por hora. Para que funcione con tus amigos hay que conectar un correo propio. Lo más fácil es Gmail:
+  1. En tu cuenta de Google: myaccount.google.com > "Seguridad" > activa la "Verificación en dos pasos".
+  2. En esa misma página busca "Contraseñas de aplicaciones". Ponle el nombre "Mis Rutas" y pulsa "Crear".
+     Google te muestra 16 letras. Cópialas (solo se ven una vez).
+  3. En Supabase: Authentication > "Emails" > pestaña "SMTP Settings" (si no la ves, usa el buscador del panel
+     y escribe SMTP). Activa "Enable custom SMTP" y rellena:
+       Sender email:  tu correo de Gmail
+       Sender name:   Mis Rutas
+       Host:          smtp.gmail.com
+       Port number:   465
+       Username:      tu correo de Gmail
+       Password:      las 16 letras de la contraseña de aplicación
+     Pulsa "Save".
+
+ C) Poner el correo en español (opcional):
+  1. Authentication > "Emails" > pestaña "Templates" > "Reset password".
+  2. En "Subject" escribe:  Restablece tu contraseña de Mis Rutas
+  3. En el cuerpo (Message body) borra lo que hay y pega:
+
+     <h2>Restablece tu contraseña</h2>
+     <p>Has pedido cambiar tu contraseña de Mis Rutas. Pulsa el botón para elegir una nueva:</p>
+     <p><a href="{{ .ConfirmationURL }}">Elegir contraseña nueva</a></p>
+     <p>Si no lo has pedido tú, ignora este mensaje: tu contraseña no cambiará.</p>
+
+     y pulsa "Save changes". No cambies {{ .ConfirmationURL }}: es el enlace que genera Supabase.
+
+ D) Probarlo: en la pantalla de bienvenida pulsa "¿Olvidaste tu contraseña?", escribe tu correo,
+    abre el correo (mira también "Spam") y pulsa el enlace. La app se abre y te pide la contraseña nueva.
+
+-----------------------------------------------------------------------------------------
+PARTE 8. TU PERFIL Y EL TIPO DE MAPA
+-----------------------------------------------------------------------------------------
+ - Pulsa tu círculo (arriba a la derecha) para abrir "Mi perfil": nombre, apellidos, foto, sexo, fecha de
+   nacimiento, cambiar correo y cambiar contraseña. El sexo y la fecha de nacimiento son privados.
+   Arriba verás "Hola" y tu nombre.
+ - Cambiar el correo: si en Supabase tienes "Confirm email" desactivado, cambia al momento. Si no, te pedirá confirmar
+   con un enlace que llega al correo nuevo.
+ - Tipo de mapa: el botón con capas (abajo a la izquierda, bajo el de ubicación) permite elegir
+   Predeterminado, Satélite, Híbrido (satélite con nombres) y Relieve (curvas de nivel y sombreado de montañas).
+   Se recuerda tu elección en ese dispositivo. Los mapas que ya has visto funcionan sin cobertura.
+
+-----------------------------------------------------------------------------------------
+PARTE 9. CATEGORÍAS PROPIAS, PERFIL, ESTADÍSTICAS Y LOGROS (novedades de la versión 5)
+-----------------------------------------------------------------------------------------
+ - Categorías nuevas: en el menú ☰ pulsa "+ Nueva categoría" (o "+ Nueva" al añadir un sitio). Elige nombre,
+   icono y color. Por ejemplo: Entrenos, Carreras, Natación. Se sincronizan entre tus dispositivos con tu cuenta.
+   El lápiz junto a una categoría propia la edita. Solo se puede borrar una categoría que no tenga sitios.
+   Si compartes tus sitios, la otra persona ve tus categorías con su nombre, icono y color.
+ - El menú ☰ solo tiene ahora el mapa y sus categorías. Todo lo de tu cuenta (perfil, compartir, sincronizar,
+   copias de seguridad, cerrar sesión) está en el círculo de arriba a la derecha, en "Mi perfil":
+     Resumen: sitios, rutas, kilómetros, desnivel acumulado, tiempo, récords, sitios por categoría y
+              kilómetros de los últimos 12 meses.
+     Logros:  (solo aparecen los que has conseguido) distancia acumulada comparada con trayectos (por ejemplo Madrid → Nueva York), desnivel
+              comparado con edificios y montañas (por ejemplo el Burj Khalifa) y niveles de exploración.
+     Perfil:  foto, nombre, apellidos, sexo y fecha de nacimiento.
+     Cuenta:  sincronizar, compartir, cambiar correo y contraseña, copias de seguridad y cerrar sesión.
+   Las estadísticas y los logros salen de las rutas con recorrido (GPX o TCX) que has importado.
+
+-----------------------------------------------------------------------------------------
+PARTE 10. ANDROID
+-----------------------------------------------------------------------------------------
+ OPCIÓN A (la más fácil y recomendada, sin archivo APK): instalar desde Chrome.
+  1. En el móvil Android abre Chrome y entra en la dirección de tu app:
+     https://matumbomatute-cloud.github.io/mis-rutas/
+  2. Inicia sesión si quieres.
+  3. Pulsa los tres puntos de Chrome (arriba a la derecha) > "Instalar aplicación" (o "Añadir a la pantalla de inicio").
+     En la pantalla de Mi perfil > Cuenta también puede aparecer el botón "Instalar la app en este dispositivo".
+  4. Confirma. Se instala como una app más, con su icono, sin barra del navegador. Se actualiza sola.
+
+ OPCIÓN B: conseguir un archivo APK (por ejemplo para pasarlo a otras personas sin usar Chrome).
+  Hay que generarlo con una herramienta gratuita en la web llamada PWABuilder. No hay que instalar nada.
+  1. Entra en pwabuilder.com y pega la dirección de tu app. Pulsa "Start".
+  2. Espera el informe. Debe reconocer el manifiesto y el service worker.
+  3. Pulsa "Package for stores" y elige "Android".
+  4. Rellena: Package ID (por ejemplo com.matumbomatute.misrutas, solo minúsculas y puntos), App name "Mis Rutas",
+     versión 1. En "Signing key" elige "New" (que PWABuilder cree la clave). Pulsa "Generate".
+  5. Se descarga un zip. Dentro hay: el archivo .apk (para instalar en el móvil), un .aab (solo sirve para subir
+     a Google Play), la clave de firma (signing key / keystore) y un archivo con sus datos. GUARDA el zip entero
+     y no lo compartas: la clave se necesita para poder actualizar la app.
+  6. Pasa el .apk al móvil (cable, Drive, WhatsApp, correo...) y ábrelo. Android pedirá permitir instalar apps
+     de esta fuente: acepta. Si Play Protect avisa de "app no verificada", pulsa "Instalar de todos modos".
+  Nota: con esta opción la app puede mostrar una barra de dirección arriba. Se quita verificando la web con un
+  archivo "assetlinks.json" (paso opcional, más abajo).
+
+  Quitar la barra de dirección (opcional):
+  a. En GitHub crea un repositorio público nuevo que se llame EXACTAMENTE: matumbomatute-cloud.github.io
+     (tu usuario seguido de .github.io).
+  b. En ese repositorio pulsa "Add file" > "Create new file". En el nombre escribe  .nojekyll  y confirma
+     ("Commit changes"). (Puede dejarse vacío.)
+  c. Otra vez "Add file" > "Create new file". En el nombre escribe  .well-known/assetlinks.json
+     (al escribir la barra se crea la carpeta). Pega dentro el contenido del archivo assetlinks.json que viene
+     en el zip de PWABuilder y confirma.
+  d. En ese repositorio: Settings > Pages > "Deploy from a branch" > main > "/ (root)" > Save.
+  e. Comprueba que abre https://matumbomatute-cloud.github.io/.well-known/assetlinks.json
+  f. Desinstala la app y vuelve a instalar el APK.
+
+ iPhone y iPad no usan APK. Se instalan con Safari > Compartir > "Añadir a pantalla de inicio".

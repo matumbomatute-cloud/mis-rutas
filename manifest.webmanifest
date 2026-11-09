@@ -1,19 +1,19 @@
 {
-  "name": "Sobre Mis Rutas",
+  "id": "./",
+  "name": "Mis Rutas",
   "short_name": "Mis Rutas",
   "description": "Diario de sitios visitados: rutas, picos, dormidas, parkings, playas y lagos.",
   "lang": "es",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#eef2f0",
   "theme_color": "#1d6b4d",
+  "categories": ["travel", "sports", "lifestyle"],
   "icons": [
-    {
-      "src": "logo-mis-rutas.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
   ]
 }
