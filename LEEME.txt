@@ -1,0 +1,63 @@
+SOBRE MIS RUTAS
+================
+
+Esta versión añade:
+- Bienvenida con logo de montaña, acceso, registro y modo invitado.
+- Perfil con nombre, apellidos, sexo, fecha de nacimiento y avatar privado.
+- Saludo personalizado («Hola [nombre]»).
+- Cambio de correo y contraseña, y recuperación mediante enlace por correo.
+- Mapas predeterminado, satélite, híbrido y relieve.
+
+Los datos de perfil se guardan en los metadatos de Auth de Supabase. El avatar se guarda en
+el bucket privado profile-avatars; cada persona solo puede acceder a su propia foto. Las rutas
+y sitios siguen usando las tablas y reglas existentes.
+
+CONFIGURAR SUPABASE
+-------------------
+
+1. En Supabase abre SQL Editor y ejecuta el archivo supabase.sql actualizado. Es seguro volver
+   a ejecutarlo: crea el bucket de avatares y sus reglas privadas; no borra rutas, cuentas ni fotos.
+2. En Authentication > URL Configuration:
+   - Define Site URL con la dirección pública de la app.
+   - Añade esa misma dirección a Redirect URLs. Si publicas en GitHub Pages, usa la URL exacta
+     que GitHub Pages asigne, incluido el nombre de ruta del repositorio.
+   Los enlaces de recuperación regresan a la dirección actual de la app, y Supabase solo permite
+   los destinos incluidos en esta lista.
+3. En Authentication > Sign In / Providers > Email, permite registros si quieres que se creen
+   cuentas nuevas. Mantén la confirmación por correo activada si quieres verificar cuentas y
+   cambios de correo.
+4. Los enlaces de recuperación y confirmación necesitan que el servicio de correo de Supabase
+   esté habilitado. Para uso real, configura SMTP propio en Authentication > SMTP Settings y
+   revisa las plantillas de Recovery y Email Change.
+5. La URL del proyecto y la clave publicable se configuran en config.js. La clave publicable está
+   pensada para usarse desde el navegador; nunca pongas una clave secret o service_role aquí.
+
+PUBLICAR Y VER LA WEB
+---------------------
+
+La app es una web estática. Para publicar con GitHub Pages, abre Settings > Pages y elige
+Deploy from a branch. Selecciona la rama que contiene estos cambios y la carpeta / (root).
+Cuando Pages termine el despliegue, abre la URL que muestra GitHub. Si Pages ya apunta a main,
+puedes cambiarlo a esta rama para revisar la versión antes de integrar los cambios.
+
+MAPAS
+-----
+
+OpenStreetMap aporta el mapa predeterminado. Las vistas satélite, híbrida y relieve usan mapas
+de Esri y mantienen la atribución visible. Los servicios de mapas dependen de internet y de las
+condiciones y disponibilidad de cada proveedor.
+
+USAR LA CUENTA
+--------------
+
+En la pantalla inicial puedes iniciar sesión, crear una cuenta o explorar sin cuenta. Para editar
+el perfil, inicia sesión y pulsa el círculo de perfil arriba a la derecha. Ahí verás tu actividad,
+logros y opciones de perfil y cuenta. Cambiar el correo
+puede requerir confirmación por email. Para cambiar una contraseña olvidada, usa «He olvidado mi
+contraseña» en la pantalla de inicio de sesión; el enlace te devuelve a la app para definir una
+contraseña nueva.
+
+CATEGORÍAS NUEVAS
+-----------------
+En el menú lateral pulsa «+ Agregar nueva opción» para crear categorías como Entreno,
+Carrera o Natación. Se guardan en el dispositivo y también se incluyen en Exportar copia.
